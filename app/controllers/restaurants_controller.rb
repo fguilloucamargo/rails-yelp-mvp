@@ -1,5 +1,6 @@
-class RestaurantsController < ApplicationController
+require_relative '../models/review'
 
+class RestaurantsController < ApplicationController
   def index
     @restaurants = Restaurant.all
   end
@@ -9,18 +10,22 @@ class RestaurantsController < ApplicationController
   end
 
   def create
-    @restaurant = Restaurant.new
-
-    raise
+    @restaurant = Restaurant.new(restaurant_params)
+    if @restaurant.save
+      redirect_to restaurant_path(@restaurant)
+    else
+      render :new
+    end
   end
 
   def show
     @restaurant = Restaurant.find(params[:id])
+    @review = Review.new
   end
 
   private
 
   def restaurant_params
-    params.require(:name, :address, :category, :phone_number).permit(:content)
+    params.require(:restaurant).permit(:name, :address, :category, :phone_number)
   end
 end

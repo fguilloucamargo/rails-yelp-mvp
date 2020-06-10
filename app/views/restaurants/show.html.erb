@@ -3,13 +3,20 @@
   <p><%= @restaurant.address %></p>
   <p><%= @restaurant.category.capitalize %></p>
 
-  <div class="card">
+  <div class="card  w-50">
     <h3>Reviews</h3>
     <ul>
       <% @restaurant.reviews.each do |review| %>
       <li><%= "*" * review.rating %> <%= review.content %></li>
        <% end %>
     </ul>
-    <%= link_to "Add a review", new_restaurant_review_path(@restaurant), class: "btn btn-outline-dark btn-sm" %>
+
+    <div class="card">
+      <%= simple_form_for [@restaurant, @review] do |f| %>
+        <%= f.input :content %>
+        <%= f.input :rating %>
+        <%= f.submit "Add a review", class: "btn btn-outline-dark btn-sm" %>
+      <% end %>
+    </div>
   </div>
 </div>
